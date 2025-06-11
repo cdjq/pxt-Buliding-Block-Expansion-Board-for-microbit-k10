@@ -1,24 +1,109 @@
+# Expansion Board MakeCode Extension
 
-> 在 [https://tangjie133.github.io/test_motor/](https://tangjie133.github.io/test_motor/) 打开此页面
+This MakeCode extension provides control functions for an I2C-based expansion board. It includes support for motor control, servo control, pin I/O modes, battery reading, and temperature/humidity sensors.
 
-## 用作扩展
+## Enumerations
 
-此仓库可以作为 **插件** 添加到 MakeCode 中。
+### Motor Selection (`MyEnumMotor`)
+- `M1`, `M2`, `M3`, `M4`: Select individual motors.
+- `ALL`: Control all motors at once.
 
-* 打开 [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* 点击 **新项目**
-* 点击齿轮图标菜单下的 **扩展**
-* 搜索 **https://github.com/tangjie133/test_motor** 并导入
+### Motor Direction (`MyEnumDir`)
+- `Forward`
+- `Backward`
 
-## 编辑此项目
+### Servo Ports (`Servos`)
+- `S1`, `S2`, `S3`, `S4`: Represents individual servo ports.
 
-在 MakeCode 中编辑此仓库。
+### General Purpose Enum (`MyEnum`)
+- `One`, `Two`: Example placeholder enum.
 
-* 打开 [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* 点击 **导入**，然后点击 **导入 URL**
-* 粘贴 **https://github.com/tangjie133/test_motor** 并点击导入
+### Pin Number (`PinNumber`)
+- `C0`, `C1`, `C2`: Logical pin identifiers used for mode/state control.
 
-#### 元数据（用于搜索、渲染）
+### Pin Mode (`PinMode`)
+- `ADC`: Analog input
+- `DHT11`: DHT11 temperature/humidity sensor
+- `DHT22`: DHT22 temperature/humidity sensor
+- `DS18B20`: 1-wire temperature sensor
+- `Digital OUT`: Output mode
+- `Digital IN`: Input mode
 
-* for PXT/microbit
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
+### Pin State (`PinState`)
+- `Low`
+- `High`
+
+### Sensor Type (`SensorType`)
+- `Analog`
+- `Digital`
+- `DHT11Temperature`, `DHT11Humidity`
+- `DHT22Temperature`, `DHT22Humidity`
+- `DS18B20Temperature`
+
+### 360-Degree Servo Direction (`Servo360Direction`)
+- `Stop`
+- `Forward`
+- `Backward`
+
+---
+
+## Functions
+
+### `initialize()`
+Initializes the expansion board by sending an enable command and setting the motor PWM period.
+
+### `readBattery(): number`
+Reads the battery level as a percentage (0–255).
+
+### `setPinMode(pin: PinNumber, mode: PinMode)`
+Sets the function mode of the specified pin.
+
+### `setGpioState(pin: PinNumber, value: PinState)`
+Writes a digital state (`Low` or `High`) to a pin.
+
+### `servoRun(servo: Servos, angle: number)`
+Rotates a servo to a specified angle (0–180°). Automatically converts angle to PWM pulse width.
+
+### `setServo360(servo: Servos, direction: Servo360Direction, speed: number)`
+Controls a continuous rotation servo with speed (0–100) and direction.
+
+### `controlMotor(emotor: MyEnumMotor, edir: MyEnumDir, speed: number)`
+Controls DC motors:
+- If a single motor (M1–M4) is selected, sends the direction and speed to it.
+- If `ALL` is selected, configures all 4 motors at once.
+
+---
+
+## Internal Functions
+
+> These are helper functions not exposed to the block interface but used internally.
+
+- `i2cReadWithRetry(...)`: Handles I2C read with retries.
+- `i2cWriteWithRetry(...)`: Handles I2C write with retries.
+- `setMotorPWMPeriod()`: Sets the PWM period for motor control.
+- `getVersion()`: Checks communication with the device using a version query.
+
+---
+
+## Notes
+
+- This extension assumes the device's I2C address is `0x33`.
+- Includes retry logic for robustness in I2C communication.
+- Requires `basic.pause(...)` delays for proper hardware timing.
+
+---
+
+## Compatibility
+
+Tested for:
+- MakeCode for Micro:bit
+- Expansion boards with I2C address `0x33`
+- DHT11, DHT22, DS18B20 sensors
+- SG90 and 360° servos
+- 4-channel DC motor drivers
+
+---
+
+## License
+
+MIT License
