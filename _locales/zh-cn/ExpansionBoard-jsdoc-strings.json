@@ -1,3 +1,12 @@
 {
-    "ExpansionBoard.initialize|block": "初始化传感器1111111"
+    "ExpansionBoard": "",
+    "ExpansionBoard.initialize|block": "初始化传感器",
+    "ExpansionBoard.readBattery|block": "读取电池电量",
+    "ExpansionBoard.setPinMode|block": "设置引脚模式",
+    "ExpansionBoard.setGpioState|block": "设置输出引脚状态",
+    "ExpansionBoard.servoRun|block": "设置舵机角度",
+    "ExpansionBoard.setServo360|block": "设置360°舵机的转动方向和速度",
+    "ExpansionBoard.controlMotor|block": "设置电机方向和速度",
+    "ExpansionBoard.readSensor|block": "读取数据"
+
 }
