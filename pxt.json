@@ -1,5 +1,5 @@
 {
-    "name": "pxt - Expansion Board for micro:bit & K10",
+    "name": "expansionboard",
     "version": "0.1.0",
     "description": "This is the Expansion Board",
     "license": "MIT",
@@ -13,8 +13,8 @@
         "main.ts",
         "README.md",
         "ExpansionBoard.ts",
-        "_locales/zh-cn/ExpansionBoard-strings.json",
-        "_locales/zh-cn/ExpansionBoard-jsdoc-strings.json"
+        "_locales/zh-cn/expansionboard-strings.json",
+        "_locales/zh-cn/expansionboard-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"
