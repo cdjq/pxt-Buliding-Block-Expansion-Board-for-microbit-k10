@@ -37,13 +37,6 @@ enum Servos {
     S4
 }
 
-// Example general-purpose enumeration
-enum MyEnum {
-    //% block="one"
-    One,
-    //% block="two"
-    Two
-}
 
 // Pin number enumeration
 enum PinNumber {
