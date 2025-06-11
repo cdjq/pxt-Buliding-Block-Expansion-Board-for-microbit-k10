@@ -1,5 +1,11 @@
 {
-  "ExpansionBoard.initialize": {
-    "message": "初始化设备"
-  }
+    "ExpansionBoard": "",
+    "ExpansionBoard.initialize": "初始化传感器",
+    "ExpansionBoard.readBattery": "读取电池电量",
+    "ExpansionBoard.setPinMode": "设置引脚模式",
+    "ExpansionBoard.setGpioState": "设置输出引脚状态",
+    "ExpansionBoard.servoRun": "设置舵机角度",
+    "ExpansionBoard.setServo360": "设置360°舵机的转动方向和速度",
+    "ExpansionBoard.controlMotor": "设置电机方向和速度",
+    "ExpansionBoard.readSensor": "读取数据"
 }
