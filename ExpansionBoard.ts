@@ -14,7 +14,7 @@ enum MyEnumMotor {
     //% block="M4"
     M4,
     //% block="ALL"
-    ALL,
+    ALL
 }
 
 // Motor direction enumeration
@@ -22,7 +22,7 @@ enum MyEnumDir {
     //% block="forward"
     Forward,
     //% block="backward"
-    Backward,
+    Backward
 }
 
 // Servo ports enumeration
@@ -74,10 +74,10 @@ enum PinState {
 
 // Sensor type enumeration
 enum SensorType {
-    //% block="ADC"
+    //% block="ADC_value"
     Analog = 0,
     //% block="digital in"
-    Digital = 1,
+    Digital_IN = 1,
     //% block="DHT11Temperature"
     DHT11Temperature = 2,
     //% block="DHT11Humidity"
@@ -87,7 +87,7 @@ enum SensorType {
     //% block="DHT22Humidity"
     DHT22Humidity = 5,
     //% block="DS18B20Temperature"
-    DS18B20Temperature = 6,
+    DS18B20Temperature = 6
 }
 
 // 360-degree servo direction enumeration
@@ -198,8 +198,8 @@ namespace ExpansionBoard {
         i2cWriteWithRetry(I2CADDR, buf);
     }
 
+    //% block="set servo %index angle %angle"
     //% weight=90
-    //% blockId=servo_Servo block="servo|%index|angle|%angle"
     //% angle.min=0 angle.max=180
     export function servoRun(servo: Servos, angle: number): void {
         angle = Math.max(0, Math.min(180, angle)); // Clamp angle
@@ -293,7 +293,7 @@ namespace ExpansionBoard {
             i2cWriteWithRetry(I2CADDR, buf);
         }
     }
-    //% block="read %type from pin %pin"
+    //% block="read pin %pin type %type"
     //% weight=87
     export function readSensor(pin: PinNumber, type: SensorType): number {
         const DATA_ENABLE = 0x01;
@@ -315,7 +315,7 @@ namespace ExpansionBoard {
                 }
                 return 0xFFFF;
 
-            case SensorType.Digital:
+            case SensorType.Digital_IN:
                 // GPIO读取
                 let gpioBuf = i2cReadWithRetry(I2CADDR, 0x3f + pin, 1);
                 return gpioBuf ? gpioBuf[0] : 0xFF;

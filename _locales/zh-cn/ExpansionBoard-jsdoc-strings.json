@@ -1,4 +1,11 @@
 {
     "ExpansionBoard.initialize": "初始化传感器，复位传感器其它状态",
-    "ExpansionBoard.readBattery": "读取电池电量，电量是一个 0 到 100 的整数，表示电池的百分比"
+    "ExpansionBoard.readBattery": "读取电池电量，电量是一个 0 到 100 的整数，表示电池的百分比",
+    "ExpansionBoard.setPinMode": "设置C0、1 、2引脚的工作模式",
+    "ExpansionBoard.setGpioState": "设置引脚的电平",
+    "ExpansionBoard.servoRun": "设置舵机的角度",
+    "ExpansionBoard.setServo360": "设置360舵机的方向和速度",
+    "ExpansionBoard.controlMotor": "控制电机的方向和速度",
+    "ExpansionBoard.readSensor": "读取C0、1 、2引脚不同模式的数据"
+    
 }
