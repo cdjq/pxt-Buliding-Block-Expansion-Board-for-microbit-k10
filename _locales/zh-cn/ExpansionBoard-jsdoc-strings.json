@@ -1,4 +1,0 @@
-{
-    //"ExpansionBoard.initialize": "初始化传感器，复位传感器其它状态",
-    //"ExpansionBoard.readBattery": "读取电池电量，电量是一个 0 到 100 的整数，表示电池的百分比"
-}
