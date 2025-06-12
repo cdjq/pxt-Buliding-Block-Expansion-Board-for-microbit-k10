@@ -12,7 +12,9 @@
         "main.blocks",
         "main.ts",
         "README.md",
-        "ExpansionBoard.ts"
+        "ExpansionBoard.ts",
+        "_locales/zh-cn/expansionboard-strings.json",
+        "_locales/zh-cn/expansionboard-jsdoc-strings.json"
     ],
     "testFiles": [
         "test.ts"

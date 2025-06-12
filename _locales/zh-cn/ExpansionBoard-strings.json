@@ -1,0 +1,4 @@
+{
+    "ExpansionBoard.initialize|block": "初始化传感器",
+    "ExpansionBoard.readBattery|block": "读取电池电量"
+}
