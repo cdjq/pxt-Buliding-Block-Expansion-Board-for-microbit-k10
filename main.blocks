@@ -1,1 +1,1 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><variables></variables></xml>
+<xml xmlns="https://developers.google.com/blockly/xml"><variables></variables><block type="device_forever" id="Qk$a1;Wtq:W+2#_bYB4F" x="0" y="0"><statement name="HANDLER"><block type="ExpansionBoard_initialize" id="Y|8tZc3LQ+lf6ct9e{fi"></block></statement></block></xml>
