@@ -168,7 +168,7 @@ namespace ExpansionBoard {
         buf[0] = 0xa0;  // Command to enable device
         buf[1] = DATA_ENABLE;
         i2cWriteWithRetry(I2CADDR, buf);
-        basic.pause(500);
+        basic.pause(1000);
         setMotorPWMPeriod(); // Set initial PWM
     }
 
@@ -233,7 +233,7 @@ namespace ExpansionBoard {
         }
 
         let buf = pins.createBuffer(3);
-        buf[0] = 0x18 + servo * 2;
+        buf[0] = 0x1a + servo * 2;
         buf[1] = (period >> 8) & 0xFF;
         buf[2] = period & 0xFF;
         i2cWriteWithRetry(I2CADDR, buf);
