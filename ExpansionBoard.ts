@@ -92,8 +92,6 @@ enum SensorType {
 
 // 360-degree servo direction enumeration
 enum Servo360Direction {
-    //% block="stop"
-    Stop = 0,
     //% block="forward"
     Forward = 1,
     //% block="backward"
@@ -103,7 +101,7 @@ enum Servo360Direction {
 /**
  * Custom blocks namespace for expansion board
  */
-//% weight=100 color=#0fbc11 icon=""
+//% weight=100 color=#0fbc11 icon="" block="Building Block Expansion Board"
 namespace ExpansionBoard {
     const I2CADDR = 0x33;        // I2C device address
     const MAX_RETRIES = 5;       // Maximum retry attempts
@@ -162,18 +160,20 @@ namespace ExpansionBoard {
 
     //% block="initialize device"
     //% weight=100
+    //% group="Init"
     export function initialize(): void {
         const DATA_ENABLE = 0x01;
         let buf = pins.createBuffer(2);
         buf[0] = 0xa0;  // Command to enable device
         buf[1] = DATA_ENABLE;
         i2cWriteWithRetry(I2CADDR, buf);
-        basic.pause(1000);
+        basic.pause(500);
         setMotorPWMPeriod(); // Set initial PWM
     }
 
     //% block="read battery percentage"
     //% weight=10
+    //% group="Battery"
     export function readBattery(): number {
         let buf = i2cReadWithRetry(I2CADDR, 0x87, 1);
         return buf[0];  // Return battery level (0–255)
@@ -181,6 +181,7 @@ namespace ExpansionBoard {
 
     //% block="set pin %pin mode %mode"
     //% weight=96
+    //% group="Function Pin"
     export function setPinMode(pin: PinNumber, mode: PinMode): void {
         let buf = pins.createBuffer(2);
         buf[0] = 0x2c + pin;
@@ -191,6 +192,7 @@ namespace ExpansionBoard {
 
     //% block="set pin %pin gpio state %value"
     //% weight=95
+    //% group="FunctionPin"
     export function setGpioState(pin: PinNumber, value: PinState): void {
         let buf = pins.createBuffer(2);
         buf[0] = 0x39 + pin;
@@ -198,103 +200,9 @@ namespace ExpansionBoard {
         i2cWriteWithRetry(I2CADDR, buf);
     }
 
-    //% block="set servo %index angle %angle"
-    //% weight=90
-    //% angle.min=0 angle.max=180
-    export function servoRun(servo: Servos, angle: number): void {
-        angle = Math.max(0, Math.min(180, angle)); // Clamp angle
-        let period = 500 + angle * 11;
-        let buf = pins.createBuffer(3);
-        buf[0] = 0x1a + servo * 2;
-        buf[1] = period >> 8;
-        buf[2] = period & 0xFF;
-        i2cWriteWithRetry(I2CADDR, buf);
-    }
-
-    //% block="set 360 servo %servo direction %direction speed %speed"
-    //% weight=85
-    //% speed.min=0 speed.max=100
-    export function setServo360(servo: Servos, direction: Servo360Direction, speed: number): void {
-        speed = Math.max(0, Math.min(100, speed)); // Clamp speed
-        let period = 1500; // Default stop value
-
-        if (speed > 0) {
-            switch (direction) {
-                case Servo360Direction.Forward:
-                    period = Math.round(1450 - (speed * 4.5)); // Forward pulse width
-                    break;
-                case Servo360Direction.Backward:
-                    period = Math.round(1550 + (speed * 4.5)); // Backward pulse width
-                    break;
-                default:
-                    period = 1500; // Stop
-                    break;
-            }
-        }
-
-        let buf = pins.createBuffer(3);
-        buf[0] = 0x1a + servo * 2;
-        buf[1] = (period >> 8) & 0xFF;
-        buf[2] = period & 0xFF;
-        i2cWriteWithRetry(I2CADDR, buf);
-    }
-
-    //% block="set %emotor direction %edir speed %speed"
-    //% speed.min=0 speed.max=255
-    //% weight=99
-    export function controlMotor(emotor: MyEnumMotor, edir: MyEnumDir, speed: number): void {
-        const MOTOR_CMDS = {
-            [MyEnumMotor.M1]: 0x04,
-            [MyEnumMotor.M2]: 0x08,
-            [MyEnumMotor.M3]: 0x0c,
-            [MyEnumMotor.M4]: 0x10
-        };
-
-        // Helper function to create motor data buffer
-        function createMotorData(cmd: number, dir: MyEnumDir, speed: number): Buffer {
-            let buf = pins.createBuffer(5);
-            buf[0] = cmd;
-            if (dir == MyEnumDir.Forward) {
-                buf[1] = 0x00;
-                buf[2] = speed;
-                buf[3] = 0x00;
-                buf[4] = 0x00;
-            } else {
-                buf[1] = 0x00;
-                buf[2] = 0x00;
-                buf[3] = 0x00;
-                buf[4] = speed;
-            }
-            return buf;
-        }
-
-        if (emotor == MyEnumMotor.ALL) {
-            // Send a full 4-motor command
-            let ALLBuf = pins.createBuffer(17);
-            ALLBuf[0] = 0x04;
-            for (let i = 0; i < 4; i++) {
-                const offset = i * 4 + 1;
-                if (edir == MyEnumDir.Forward) {
-                    ALLBuf[offset] = 0x00;
-                    ALLBuf[offset + 1] = speed;
-                    ALLBuf[offset + 2] = 0x00;
-                    ALLBuf[offset + 3] = 0x00;
-                } else {
-                    ALLBuf[offset] = 0x00;
-                    ALLBuf[offset + 1] = 0x00;
-                    ALLBuf[offset + 2] = 0x00;
-                    ALLBuf[offset + 3] = speed;
-                }
-            }
-            i2cWriteWithRetry(I2CADDR, ALLBuf);
-        } else {
-            let cmd = MOTOR_CMDS[emotor];
-            let buf = createMotorData(cmd, edir, speed);
-            i2cWriteWithRetry(I2CADDR, buf);
-        }
-    }
     //% block="read pin %pin type %type"
     //% weight=87
+    //% group="FunctionPin"
     export function readSensor(pin: PinNumber, type: SensorType): number {
         const DATA_ENABLE = 0x01;
         const MODE_ERROR = 0x02;
@@ -406,4 +314,168 @@ namespace ExpansionBoard {
                 return 0;
         }
     }
+
+    //% block="set 180 Standard Servo %index angle %angle"
+    //% group="Servo"
+    //% weight=90
+    //% angle.min=0 angle.max=180
+    export function servoStandardRun(servo: Servos, angle: number): void {
+        angle = Math.max(0, Math.min(180, angle)); // Clamp angle
+        let period = Math.round(500 + angle * 11.1);
+        let buf = pins.createBuffer(3);
+        buf[0] = 0x1a + servo * 2;
+        buf[1] = period >> 8;
+        buf[2] = period & 0xFF;
+        i2cWriteWithRetry(I2CADDR, buf);
+    }
+
+    //% block="set 360 Positional Servo %index angle %angle"
+    //% group="Servo"
+    //% weight=90
+    //% angle.min=0 angle.max=360
+    export function servoPositionalRun(servo: Servos, angle: number): void {
+        angle = Math.max(0, Math.min(360, angle)); // Clamp angle
+        let period = Math.round(500 + angle * 5.55);
+        let buf = pins.createBuffer(3);
+        buf[0] = 0x1a + servo * 2;
+        buf[1] = period >> 8;
+        buf[2] = period & 0xFF;
+        i2cWriteWithRetry(I2CADDR, buf);
+    }
+    
+    //% block="stop 360 Continuous Rotation Servo %servo"
+    //% blockId=stopContinuousRotation
+    //% group="Servo"
+    //% weight=85
+    export function stopContinuousRotation(servo: Servos): void {
+        let period = 1500; // Default stop value
+        let buf = pins.createBuffer(3);
+        buf[0] = 0x1a + servo * 2;
+        buf[1] = (period >> 8) & 0xFF;
+        buf[2] = period & 0xFF;
+        i2cWriteWithRetry(I2CADDR, buf);
+    }
+
+    
+    //% block="set 360 Continuous Rotation Servo %servo direction %direction speed %speed"
+    //% blockId=setContinuousRotation
+    //% group="Servo"
+    //% weight=85
+    //% speed.min=0 speed.max=100
+    export function setContinuousRotation(servo: Servos, direction: Servo360Direction, speed: number): void {
+        speed = Math.max(0, Math.min(100, speed)); // Clamp speed
+        let period = 1500; // Default stop value
+
+        if (speed > 0) {
+            switch (direction) {
+                case Servo360Direction.Forward:
+                    period = Math.round(1450 - (speed * 4.5)); // Forward pulse width
+                    break;
+                case Servo360Direction.Backward:
+                    period = Math.round(1550 + (speed * 4.5)); // Backward pulse width
+                    break;
+                default:
+                    period = 1500; // Stop
+                    break;
+            }
+        }
+        let buf = pins.createBuffer(3);
+        buf[0] = 0x1a + servo * 2;
+        buf[1] = (period >> 8) & 0xFF;
+        buf[2] = period & 0xFF;
+        i2cWriteWithRetry(I2CADDR, buf);
+    }
+
+    //% block="set motor %emotor direction %edir speed %speed"
+    //% speed.min=0 speed.max=255
+    //% weight=99
+    //% group="Motor"
+    export function controlMotor(emotor: MyEnumMotor, edir: MyEnumDir, speed: number): void {
+        const MOTOR_CMDS = {
+            [MyEnumMotor.M1]: 0x04,
+            [MyEnumMotor.M2]: 0x08,
+            [MyEnumMotor.M3]: 0x0c,
+            [MyEnumMotor.M4]: 0x10
+        };
+
+        // Helper function to create motor data buffer
+        function createMotorData(cmd: number, dir: MyEnumDir, speed: number): Buffer {
+            let buf = pins.createBuffer(5);
+            buf[0] = cmd;
+            if (dir == MyEnumDir.Forward) {
+                buf[1] = 0x00;
+                buf[2] = speed;
+                buf[3] = 0x00;
+                buf[4] = 0x00;
+            } else {
+                buf[1] = 0x00;
+                buf[2] = 0x00;
+                buf[3] = 0x00;
+                buf[4] = speed;
+            }
+            return buf;
+        }
+
+        if (emotor == MyEnumMotor.ALL) {
+            // Send a full 4-motor command
+            let ALLBuf = pins.createBuffer(17);
+            ALLBuf[0] = 0x04;
+            for (let i = 0; i < 4; i++) {
+                const offset = i * 4 + 1;
+                if (edir == MyEnumDir.Forward) {
+                    ALLBuf[offset] = 0x00;
+                    ALLBuf[offset + 1] = speed;
+                    ALLBuf[offset + 2] = 0x00;
+                    ALLBuf[offset + 3] = 0x00;
+                } else {
+                    ALLBuf[offset] = 0x00;
+                    ALLBuf[offset + 1] = 0x00;
+                    ALLBuf[offset + 2] = 0x00;
+                    ALLBuf[offset + 3] = speed;
+                }
+            }
+            i2cWriteWithRetry(I2CADDR, ALLBuf);
+        } else {
+            let cmd = MOTOR_CMDS[emotor];
+            let buf = createMotorData(cmd, edir, speed);
+            i2cWriteWithRetry(I2CADDR, buf);
+        }
+    }
+    
+    //% block="stop motor %emotor"
+    //% weight=98
+    //% group="Motor"
+    export function stopMotor(emotor: MyEnumMotor): void {
+        const MOTOR_CMDS = {
+            [MyEnumMotor.M1]: 0x04,
+            [MyEnumMotor.M2]: 0x08,
+            [MyEnumMotor.M3]: 0x0c,
+            [MyEnumMotor.M4]: 0x10
+        };
+
+        if (emotor == MyEnumMotor.ALL) {
+            // 停止所有电机
+            let ALLBuf = pins.createBuffer(17);
+            ALLBuf[0] = 0x04; // 与 controlMotor ALL 保持一致
+            for (let i = 0; i < 4; i++) {
+                const offset = i * 4 + 1;
+                ALLBuf[offset] = 0x00;
+                ALLBuf[offset + 1] = 0x00;
+                ALLBuf[offset + 2] = 0x00;
+                ALLBuf[offset + 3] = 0x00;
+            }
+            i2cWriteWithRetry(I2CADDR, ALLBuf);
+        } else {
+            // 停止单个电机
+            let cmd = MOTOR_CMDS[emotor];
+            let buf = pins.createBuffer(5);
+            buf[0] = cmd;
+            buf[1] = 0x00;
+            buf[2] = 0x00;
+            buf[3] = 0x00;
+            buf[4] = 0x00;
+            i2cWriteWithRetry(I2CADDR, buf);
+        }
+    }
+
 }

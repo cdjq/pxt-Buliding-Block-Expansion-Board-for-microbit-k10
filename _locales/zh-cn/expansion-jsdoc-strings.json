@@ -1,11 +1,20 @@
 {
-    "ExpansionBoard.initialize": "初始化传感器，复位传感器其它状态",
-    "ExpansionBoard.readBattery": "读取电池电量，电量是一个 0 到 100 的整数，表示电池的百分比",
-    "ExpansionBoard.setPinMode": "设置C0、1 、2引脚的工作模式",
-    "ExpansionBoard.setGpioState": "设置引脚的电平",
-    "ExpansionBoard.servoRun": "设置舵机的角度",
-    "ExpansionBoard.setServo360": "设置360舵机的方向和速度",
+    "ExpansionBoard.initialize": "初始化传感器，并复位其他传感器状态",
+    "ExpansionBoard.readBattery": "读取电池电量，返回0到100的整数，表示电池百分比",
+    "ExpansionBoard.setPinMode": "设置C0、C1或C2引脚的工作模式",
+    "ExpansionBoard.setGpioState": "设置指定引脚的高低电平",
+    "ExpansionBoard.readSensor": "读取C0、C1或C2引脚在不同模式下的数据",
+    "ExpansionBoard.servoStandardRun": "设置伺服180°舵机的角度",
+    "ExpansionBoard.servoPositionalRun": "设置伺服360°舵机的角度",
+    "ExpansionBoard.setContinuousRotation": "设置360°连续旋转舵机的方向和速度",
+    "ExpansionBoard.stopContinuousRotation": "停止360°连续旋转舵机的旋转",
     "ExpansionBoard.controlMotor": "控制电机的方向和速度",
-    "ExpansionBoard.readSensor": "读取C0、1 、2引脚不同模式的数据"
-    
+    "ExpansionBoard.stopMotor": "停止指定电机或所有电机",
+    "ExpansionBoard.MyEnumMotor": "选择电机：M1、M2、M3、M4或全部ALL",
+    "ExpansionBoard.MyEnumDir": "电机旋转方向：Forward正转，Backward反转",
+    "ExpansionBoard.Servos": "选择舵机端口：S1、S2、S3、S4",
+    "ExpansionBoard.PinNumber": "选择引脚：C0、C1、C2",
+    "ExpansionBoard.PinMode": "设置引脚工作模式：ADC模拟输入、DHT11温湿度、DHT22温湿度、DS18B20温度、Digital OUT数字输出、Digital IN数字输入",
+    "ExpansionBoard.PinState": "设置引脚状态：Low低电平，High高电平",
+    "ExpansionBoard.SensorType": "传感器类型：ADC_value模拟值、digital in数字输入、DHT11温度/湿度、DHT22温度/湿度、DS18B20温度"
 }

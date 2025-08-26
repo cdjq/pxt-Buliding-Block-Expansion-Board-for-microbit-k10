@@ -3,9 +3,12 @@
     "ExpansionBoard.readBattery|block": "读取电池电量",
     "ExpansionBoard.setPinMode|block": "设置引脚 %pin 模式为 %mode",
     "ExpansionBoard.setGpioState|block": "设置引脚 %pin GPIO 电平 %value",
-    "ExpansionBoard.servoRun|block": "设置舵机 %index 角度为 %angle",
-    "ExpansionBoard.setServo360|block": "设置360舵机 %servo 方向 %direction 速度 %speed",
+    "ExpansionBoard.servoStandardRun|block": "设置180°伺服舵机 %index 角度为 %angle",
+    "ExpansionBoard.servoPositionalRun|block": "设置360°伺服舵机 %index 角度为 %angle",
+    "ExpansionBoard.setContinuousRotation|block": "设置360°连续旋转舵机 %servo 方向 %direction 速度 %speed",
+    "ExpansionBoard.stopContinuousRotation|block": "停止360°连续旋转舵机 %servo",
     "ExpansionBoard.controlMotor|block": "设置电机 %emotor 方向 %edir 速度 %speed",
+    "ExpansionBoard.stopMotor|block": "停止电机 %emotor",
     "ExpansionBoard.readSensor|block": "读取引脚 %pin 类型 %type",
     "MyEnumMotor.ALL|block": "全部电机",
     "MyEnumDir.Forward|block": "电机正转",
@@ -25,7 +28,6 @@
     "SensorType.DHT22Temperature|block": "dht22温度",
     "SensorType.DHT22Humidity|block": "dht22湿度",
     "SensorType.DS18B20Temperature|block": "18b20的温度",
-    "Servo360Direction.Stop|block": "停止",
     "Servo360Direction.Forward|block": "正转",
     "Servo360Direction.Backward|block": "反转"
 }
